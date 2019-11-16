@@ -1,4 +1,4 @@
-<div class="dashboard-ecommerce" style="min-height: 565px;">
+<div class="dashboard-ecommerce" style="min-height : 83vh">
   <div class="container-fluid dashboard-content centerVertical">
     <!-- ============================================================== -->
     <!-- pageheader  -->

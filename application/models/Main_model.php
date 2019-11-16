@@ -60,6 +60,25 @@ class Main_model extends CI_Model {
     return $query->result();
   }
 
+	function getArtikel($table,$where = null){
+    if($where != null) $this->db->where($where);
+    $this->db->order_by('id_artikel', 'desc');
+
+    $query = $this->db->get($table);
+    return $query->result();
+  }
+
+	function getWithDeleted($table, $where = ['deleted_at' => ''], $order = null, $limit = null, $group = null,$select = null){
+    if($where != null) $this->db->where($where);
+    if($order != null) $this->db->order_by($order);
+    if($group != null) $this->db->group_by($group);
+    if($limit != null) $this->db->limit($limit);
+    if($select != null) $this->db->select($select);
+
+    $query = $this->db->get($table);
+    return $query->result();
+  }
+
 	public function update($params, $table, $where){
 		$this->db->where($where);
 		return $this->db->update($table, $params);

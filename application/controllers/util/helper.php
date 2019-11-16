@@ -1,50 +1,18 @@
 <?php
 class Helper{
-  public function klasifikasiKomentar($jumlah_item, $total_nilai){
-    switch ($jumlah_item) {
-      case 2:
-      if($total_nilai > 5){
-        return "plus";
-      } else {
-        return "minus";
-      }
-      break;
+  public function klasifikasiKomentar($pernyataan, $total_nilai){
+    if($total_nilai > $pernyataan->plus_value){
+      return "plus";
+    } else {
+      return "minus";
+    }
+  }
 
-      case 3:
-      if($total_nilai > 7){
-        return "plus";
-      } else {
-        return "minus";
-      }
-      break;
-
-      case 4:
-      if($total_nilai > 10){
-        return "plus";
-      } else {
-        return "minus";
-      }
-      break;
-
-      case 5:
-      if($total_nilai > 12){
-        return "plus";
-      } else {
-        return "minus";
-      }
-      break;
-
-      case 6:
-      if($total_nilai > 15){
-        return "plus";
-      } else {
-        return "minus";
-      }
-      break;
-
-      default:
-      return "";
-      break;
+  public function isNeedTask($myvalue, $median){
+    if($myvalue <= $median){
+      return true;
+    } else {
+      return false;
     }
   }
 }

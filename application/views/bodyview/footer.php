@@ -2,7 +2,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                             Copyright © 2019 RIDE.
+                             Copyright © 2019 HOPE.
                         </div>
                     </div>
                 </div>
@@ -57,6 +57,13 @@
       viewMode: "years",
       minViewMode: "years"
     });
+
+    function directDelete(url){
+      var x = confirm("Apakah Anda ingin menghapus data ini?");
+      if(x){
+        window.location.href = url;
+      }
+    }
 
     function redirect(url){
       var x = confirm("Apakah Anda ingin menghapus data ini?");

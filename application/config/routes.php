@@ -52,6 +52,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'admin';
 $route['login'] = "login/index";
 $route['biodata'] = "biodata/index";
+$route['users'] = "user/index";
 $route["survey/detail/(:any)"] = "survey/detail/$1";
 $route["survey/pertanyaan/(:any)"] = "survey/pertanyaan/$1";
 $route["survey/taskintervensi/(:any)"] = "survey/taskintervensi/$1";

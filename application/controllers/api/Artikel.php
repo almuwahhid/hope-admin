@@ -2,29 +2,28 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 require_once(APPPATH.'controllers/api/Base_api.php');
 
-class Wisata extends Base_api {
+class Artikel extends Base_api {
   public function __construct() {
     parent::__construct();
     $this->load->helper('url');
 
-    $this->load->model('kendaraan_model');
     $this->load->model('main_model');
-    $this->load->model('wisata_model');
+    $this->load->model('artikel_model');
   }
 
   public function index(){
-    $wisata = $this->wisata_model->get();
+    $asd = $this->artikel_model->getAll();
 
-    if($wisata){
+    if($asd){
       $data = array(
                   'status'           => "200",
                   'message'           => "Wisata Tersedia",
-                  'data'          => $wisata);
+                  'data'          => $asd);
     } else {
       $data = array(
                   'status'           => "204",
-                  'message'           => "Wisata tidak tersedia",
-                  'data'          => $wisata);
+                  'message'           => "Artikel belum tersedia",
+                  'data'          => $asd);
     }
     echo json_encode($data);
   }

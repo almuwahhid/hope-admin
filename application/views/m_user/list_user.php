@@ -40,16 +40,14 @@
                       <th class="border-0">Email</th>
                       <th class="border-0">Nama</th>
                       <th class="border-0">Jenis Kelamin</th>
-                      <th class="border-0">Alamat Tinggal</th>
-                      <th class="border-0">Agama</th>
-                      <th class="border-0">Nomor WA</th>
-                      <th class="border-0">Aksi</th>
+                      <th class="border-0 text-center">Semester</th>
+                      <th class="border-0 text-center">Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
                     <?php
                     $no = 0;
-                    foreach ($data['user'] as $k => $user) { ?>
+                    foreach ($data as $k => $user) { ?>
                       <tr>
                         <td class="centerHorizontal text-center">
                           <?= ++$no;?>
@@ -63,22 +61,13 @@
                         <td>
                           <?= $user->jenis_kelamin ?>
                         </td>
-                        <td>
-                          <?= $user->alamat_tinggal ?>
+                        <td class="text-center">
+                          <?= $user->semester == "" ? "-":$user->semester ?>
                         </td>
-                        <td>
-                          <?= $user->agama ?>
-                        </td>
-                        <td>
-                          <?= $user->no_wa ?>
-                        </td>
-                        <td>
-                          <a href='<?= base_url()."survey/detail/".$user->id_user; ?>'>
+                        <td class="text-center">
+                          <a href='<?= base_url()."user/detail/".$user->id_user; ?>'>
                             <i class="fas fa-search"></i>
-                          </a> &nbsp;&nbsp;
-                          <!-- <a href="#" onclick="redirect('<?= base_url()."/wisata/delete?id=".$wisata->id_wisata; ?>')">
-                            <i class="fas fa-trash"></i>
-                          </a> -->
+                          </a>
                         </td>
                       </tr>
                       <?php }?>
@@ -89,7 +78,7 @@
           </div>
         </div>
 
-        <div class="col-md-12">
+        <!-- <div class="col-md-12">
           <nav aria-label="Page navigation">
             <ul class="pagination">
               <?php
@@ -113,7 +102,7 @@
               ?>
             </ul>
           </nav>
-        </div>
+        </div> -->
 
       </div>
     </div>

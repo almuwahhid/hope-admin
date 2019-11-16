@@ -19,7 +19,7 @@
     <script src="<?php echo base_url('assets/vendor/jquery/jquery-3.3.1.min.js')?>"></script>
 
     <link rel="stylesheet" href="<?php echo base_url('assets/css/style-skripsi.css')?>">
-    <title>Admin RIDE</title>
+    <title>HOPE</title>
 </head>
 
 <body>
@@ -32,7 +32,7 @@
         <!-- ============================================================== -->
         <div class="dashboard-header">
             <nav class="navbar navbar-expand-lg bg-white fixed-top">
-                <a class="navbar-brand" href="index.html"><img src="<?php echo base_url('assets/images/beres_logo.png')?>" alt="" style="height:50px;width:50px;margin-top:-5px" class="user-avatar-md rounded-circle">&nbsp;RIDE</a>
+                <a class="navbar-brand" href="index.html"><img src="<?php echo base_url('assets/images/hope.png')?>" alt="" style="height:40px;width:40px;margin-top:-5px" class="user-avatar-md">&nbsp;HOPE</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -74,12 +74,26 @@
                             <li class="nav-item">
                                 <a class="nav-link<?php if($page == "dashboard")echo " active";?> " href="<?= base_url()?>"><i class="fas fa-home"></i>Dashboard</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link<?php if($page == "survey")echo " active";?>" href="<?= base_url()?>survey"><i class="fas fa-chart-line"></i>Survey Pengguna</a>
-                            </li>
                             <!-- <li class="nav-item">
-                                <a class="nav-link<?php if($page == "pertanyaan")echo " active";?>" href="<?= base_url()?>user"><i class="fas fa-list-ul"></i>Butir Pertanyaan</a>
+                                <a class="nav-link<?php if($page == "survey")echo " active";?>" href="<?= base_url()?>survey"><i class="fas fa-chart-line"></i>Survey Pengguna</a>
                             </li> -->
+                              <li class="nav-item ">
+                                <a class="nav-link<?php if($page == "artikel")echo " active";?>" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1" aria-controls="submenu-1"><i class="fas fa-list-ul"></i>Artikel </a>
+                                <!-- <span class="badge badge-success">6</span> -->
+                                <div id="submenu-1" class="collapse submenu" style="">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="<?= base_url()."artikel"?>">Daftar Artikel</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="<?= base_url()."artikel/tambah"?>">Tambah Artikel</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link<?php if($page == "user")echo " active";?> " href="<?= base_url()."users"?>"><i class="fas fa-users"></i>Users</a>
+                            </li>
                         </ul>
                     </div>
                 </nav>

@@ -120,6 +120,80 @@ class Survey_model extends CI_Model {
 		return $this->db->insert("pertanyaan_survey", $params);
 	}
 
+	public function isPertanyaanAsPernyataanSubAspek($id_survey, $id_sub_aspek){
+		if($this->getCountPertanyaanBySubAspek($id_survey, $id_sub_aspek) == $this->getCountPernyataanBySubAspek($id_sub_aspek)){
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function isPertanyaanAsPernyataanAspek($id_survey, $id_aspek){
+		if($this->getCountPertanyaanByAspek($id_survey, $id_aspek) == $this->getCountPernyataanByAspek($id_aspek)){
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function getCountPertanyaanBySubAspek($id_survey, $id_sub_aspek){
+		$this->db->where('sub_aspek.id_sub_aspek', $id_sub_aspek);
+		$this->db->where('id_survey', $id_survey);
+		$this->db->join('pernyataan', 'pertanyaan_survey.id_pernyataan = pernyataan.id_pernyataan');
+		$this->db->join('indikator', 'pernyataan.id_indikator = indikator.id_indikator');
+		$this->db->join('sub_aspek', 'indikator.id_sub_aspek = sub_aspek.id_sub_aspek');
+		$this->db->select('*');
+		$this->db->from('pertanyaan_survey');
+		return $this->db->count_all_results();
+	}
+
+	public function getCountPertanyaanByAspek($id_survey, $id_aspek){
+		$this->db->where('aspek.id_aspek', $id_aspek);
+		$this->db->where('id_survey', $id_survey);
+		$this->db->join('pernyataan', 'pertanyaan_survey.id_pernyataan = pernyataan.id_pernyataan');
+		$this->db->join('indikator', 'pernyataan.id_indikator = indikator.id_indikator');
+		$this->db->join('sub_aspek', 'indikator.id_sub_aspek = sub_aspek.id_sub_aspek');
+		$this->db->join('aspek', 'aspek.id_aspek = sub_aspek.id_aspek');
+		$this->db->select('*');
+		$this->db->from('pertanyaan_survey');
+		return $this->db->count_all_results();
+	}
+
+	public function getCountPernyataanBySubAspek($id_sub_aspek){
+		$this->db->where('sub_aspek.id_sub_aspek', $id_sub_aspek);
+		$this->db->join('indikator', 'pernyataan.id_indikator = indikator.id_indikator');
+		$this->db->join('sub_aspek', 'indikator.id_sub_aspek = sub_aspek.id_sub_aspek');
+		$this->db->select('*');
+    $this->db->from('pernyataan');
+		return $this->db->count_all_results();
+	}
+
+	// public function getCountPernyataanByAspek($id_aspek){
+	// 	$this->db->where('aspek.id_aspek', $id_aspek);
+	// 	$this->db->join('indikator', 'pernyataan.id_indikator = indikator.id_indikator');
+	// 	$this->db->join('sub_aspek', 'indikator.id_sub_aspek = sub_aspek.id_sub_aspek');
+	// 	$this->db->join('aspek', 'aspek.id_aspek = sub_aspek.id_aspek');
+	// 	$this->db->select('*');
+  //   $this->db->from('pernyataan');
+	// 	return $this->db->count_all_results();
+	// }
+
+	public function getNilaiPertanyaanBySubAspek($id_survey, $id_sub_aspek){
+		$this->db->where('sub_aspek.id_sub_aspek', $id_sub_aspek);
+		$this->db->where('id_survey', $id_survey);
+		$this->db->join('pernyataan', 'pertanyaan_survey.id_pernyataan = pernyataan.id_pernyataan');
+		$this->db->join('indikator', 'pernyataan.id_indikator = indikator.id_indikator');
+		$this->db->join('sub_aspek', 'indikator.id_sub_aspek = sub_aspek.id_sub_aspek');
+		$this->db->select('*');
+		$pertanyaan_survey = $this->db->get('pertanyaan_survey')->result();
+
+		$jumlah = 0;
+		foreach ($pertanyaan_survey as $k => $pty) {
+			$jumlah = $jumlah+$pty->nilai_pertanyaan;
+		}
+		return $jumlah;
+	}
+
 	// ======================================================================== //
 
 	public function isPertanyaanAsPernyataanIndikator($id_survey, $id_indikator){
@@ -186,8 +260,8 @@ class Survey_model extends CI_Model {
 
 	public function getCountPernyataanByAspek($id_aspek){
 		$this->db->where('id_aspek', $id_aspek);
-		$this->db->join('indikator', 'indikator.id_aspek = aspek.id_aspek');
-		$this->db->join('pernyataan', 'indikator.id_indikator = pernyataan.id_indikator');
+		$this->db->join('indikator', 'pernyataan.id_indikator = indikator.id_indikator');
+		$this->db->join('sub_aspek', 'indikator.id_sub_aspek = sub_aspek.id_sub_aspek');
 		$this->db->select('*');
     $this->db->from('pernyataan');
 		return $this->db->count_all_results();
@@ -198,6 +272,7 @@ class Survey_model extends CI_Model {
 		$this->db->where('id_aspek', $id_aspek);
 		$this->db->join('pernyataan', 'pertanyaan_survey.id_pernyataan = pernyataan.id_pernyataan');
 		$this->db->join('indikator', 'pernyataan.id_indikator = indikator.id_indikator');
+		$this->db->join('sub_aspek', 'indikator.id_sub_aspek = sub_aspek.id_sub_aspek');
 		$this->db->select('*');
 		$pertanyaan_survey = $this->db->get('pertanyaan_survey')->result();
 
@@ -233,7 +308,7 @@ class Survey_model extends CI_Model {
 	public function getSampleKlasifikasiScoreByScore($id_aspek, $score){
 		$this->db->where('id_aspek', $id_aspek);
 		$this->db->where('begin_range >=', $score);
-		$this->db->where('due_range <=', $score);
+		$this->db->where('due_range <', $score);
 		$this->db->select('*');
 		$this->db->get('klasifikasi_score_identitas');
 		return $this->db->last_query();
@@ -353,6 +428,7 @@ class Survey_model extends CI_Model {
 		$this->db->where('survey.id_survey', $id_survey);
 		$this->db->join('pertanyaan_survey', 'survey.id_survey = pertanyaan_survey.id_survey');
 		$this->db->join('pernyataan', 'pernyataan.id_pernyataan = pertanyaan_survey.id_pernyataan');
+		$this->db->join('indikator', 'pernyataan.id_indikator = indikator.id_indikator');
 		$this->db->select('*');
 		return $this->db->get('survey')->result();
 	}
@@ -368,6 +444,7 @@ class Survey_model extends CI_Model {
 		$this->db->select('*');
 		$this->db->join('pertanyaan_survey', 'pertanyaan_survey.id_pertanyaan_survey = task_pertanyaan.id_pertanyaan_survey');
 		$this->db->join('pernyataan', 'pertanyaan_survey.id_pernyataan = pernyataan.id_pernyataan');
+		$this->db->join('indikator', 'pernyataan.id_indikator = indikator.id_indikator');
 		return $this->db->get('task_pertanyaan')->row();
 	}
 

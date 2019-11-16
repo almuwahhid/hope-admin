@@ -65,7 +65,7 @@ class Survey extends Base_api {
       }
     }
 
-    $result["nilai"] = $this->survey_model->totalNilaiIntervensi($data->id_user);
+    // $result["nilai"] = $this->survey_model->totalNilaiIntervensi($data->id_user);
     echo json_encode($result);
   }
 
@@ -75,65 +75,58 @@ class Survey extends Base_api {
     $data = json_decode($this->input->post('data'));
     $pernyataan = json_decode($this->input->post('pernyataan'));
     $result = array();
+    $pertanyaan = array(
+                'id_survey'           => $data->id_survey,
+                'id_pernyataan'           => $$pernyataan->id_pernyataan,
+                'nilai_pertanyaan'           => $data->nilai_pertanyaan,
+                'nama_nilai_pertanyaan'           => $data->nama_nilai_pertanyaan
+                );
     $process = $this->survey_model->addPertanyaanSurvey($data);
-
-    $isNeedTask = false;
-
-    if($this->survey_model->getCountTaskIntervensiBySurvey($data->id_survey) < 7){
-      if($pernyataan->id_pernyataan > 35){
-        if($data->nilai_pertanyaan > 2){
-          $isNeedTask = true;
-        }
-      } else {
-        if($pernyataan->id_jenis_pernyataan == 1){
-          if($data->nilai_pertanyaan <= 2){
-            $isNeedTask = true;
-          }
-        } else {
-          if($data->nilai_pertanyaan <= 2){
-            $isNeedTask = true;
-          }
-        }
-      }
-    }
 
     if($process){
       $result["indikator"] = false;
+      $result["aspek"] = false;
       $result["survey"] = false;
-      if($isNeedTask){
-        $last_pertanyaan = $this->survey_model->getLastPertanyaan($data->id_survey);
-        $task_pertanyaan = array(
-                    'id_pertanyaan_survey'           => $last_pertanyaan->id_pertanyaan_survey,
-                    'tanggal_task'           => $this->survey_model->getLastDateIntervensi($data->id_survey),
-                    'status_task'           => 'N'
-                    );
-        $this->main_model->create($task_pertanyaan, "task_pertanyaan");
-        $result["intervensi"] = $this->survey_model->getLastIntervensi($data->id_survey);
-      }
 
+      // jika Jumlah pertanyaan == jumlah indikator
       if($this->survey_model->isPertanyaanAsPernyataanIndikator($data->id_survey, $pernyataan->id_indikator)){
         $result["indikator"] = true;
 
-        $countPernyataanByIndikator = $this->survey_model->getCountPernyataanByIndikator($pernyataan->id_indikator);
-        $countPertanyaanByIndikator = $this->survey_model->getCountPertanyaanByIndikator($data->id_survey, $pernyataan->id_indikator);
+        // $countPernyataanByIndikator = ($this->survey_model->getCountPernyataanByIndikator($pernyataan->id_indikator)*4)/2;
         $nilaiPertanyaanByIndikator = $this->survey_model->getNilaiPertanyaanByIndikator($data->id_survey, $pernyataan->id_indikator);
 
-        if($pernyataan->id_indikator == 9 || $pernyataan->id_indikator == 10){
-          if($helper->klasifikasiKomentar($countPernyataanByIndikator, $nilaiPertanyaanByIndikator) == "plus"){
-            $result["data_indikator"] = $this->pernyataan_model->getIndikatorByIdIndikator($pernyataan->id_indikator)->negative_comment;
-          } else if($helper->klasifikasiKomentar($countPernyataanByIndikator, $nilaiPertanyaanByIndikator) == "minus"){
-            $result["data_indikator"] = $this->pernyataan_model->getIndikatorByIdIndikator($pernyataan->id_indikator)->plus_comment;
-          }
-        } else {
-          if($helper->klasifikasiKomentar($countPernyataanByIndikator, $nilaiPertanyaanByIndikator) == "plus"){
-            $result["data_indikator"] = $this->pernyataan_model->getIndikatorByIdIndikator($pernyataan->id_indikator)->plus_comment;
-          } else if($helper->klasifikasiKomentar($countPernyataanByIndikator, $nilaiPertanyaanByIndikator) == "minus"){
-            $result["data_indikator"] = $this->pernyataan_model->getIndikatorByIdIndikator($pernyataan->id_indikator)->negative_comment;
-          }
+        // TODO : UNDONE 06/11/2019 11:54
+        if($helper->isNeedTask($nilaiPertanyaanByIndikator, $pernyataan->indikator_median)){
+          $last_pertanyaan = $this->survey_model->getLastPertanyaan($data->id_survey);
+          $task_pertanyaan = array(
+                      'id_pertanyaan_survey'           => $last_pertanyaan->id_pertanyaan_survey,
+                      'tanggal_task'           => $this->survey_model->getLastDateIntervensi($data->id_survey),
+                      'status_task'           => 'N'
+                      );
+          $this->main_model->create($task_pertanyaan, "task_pertanyaan");
+          $result["intervensi"] = $this->survey_model->getLastIntervensi($data->id_survey);
         }
       }
 
-      // , $this->pernyataan_model->getAspekByIdIndikator($pernyataan->id_indikator))
+      // jika Jumlah pertanyaan == jumlah aspek
+      if($this->survey_model->isPertanyaanAsPernyataanAspek($data->id_survey, $pernyataan->id_aspek)){
+        $result["aspek"] = true;
+
+        $countPernyataanBySubAspek = $this->survey_model->getCountPernyataanByAspek($pernyataan->id_aspek);
+        $countPertanyaanBySubAspek = $this->survey_model->getCountPertanyaanByAspek($data->id_survey, $pernyataan->id_aspek);
+        $nilaiPertanyaanBySubAspek = $this->survey_model->getNilaiPertanyaanByAspek($data->id_survey, $pernyataan->id_aspek);
+
+        if($helper->klasifikasiKomentar($pernyataan, $nilaiPertanyaanBySubAspek) == "plus"){
+          $result["data_aspek"] = $this->pernyataan_model->getAspekByAspek($pernyataan->id_aspek)->plus_comment;
+          $result["data_aspek_indicator"] = "plus";
+        } else if($helper->klasifikasiKomentar($pernyataan, $nilaiPertanyaanBySubAspek) == "minus"){
+          $result["data_aspek"] = $this->pernyataan_model->getAspekByAspek($pernyataan->id_aspek)->negative_comment;
+          $result["data_aspek_indicator"] = "minus";
+        }
+      }
+
+      // TODO : DONE 06/11/2019 11:54
+      // jika Jumlah pertanyaan == keseluruhan aspek
       if($this->survey_model->isPertanyaanAsPernyataanAll($data->id_survey)){
         $result["survey"] = true;
         $aspek = $this->pernyataan_model->getAspek();

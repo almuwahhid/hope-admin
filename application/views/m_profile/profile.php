@@ -42,9 +42,10 @@
             <div class="card-body">
               <form action="<?=base_url('admin/ubah')?>" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="action" value="tambah">
+                <input type="hidden" name="username" value="admin">
                 <div class="form-group">
                   <label for="inputText3" class="col-form-label">Password saat ini</label>
-                  <input required name="password" id="inputText3" type="password" class="form-control"/>
+                  <input required name="password_lama" id="inputText3" type="password" class="form-control"/>
                 </div>
                 <div class="form-group">
                   <label for="inputText3" class="col-form-label">Password baru</label>
@@ -52,7 +53,7 @@
                 </div>
                 <div class="form-group">
                   <label for="inputText3" class="col-form-label">Ulangi password baru</label>
-                  <input required name="ulangi_password" id="inputText3" type="password" class="form-control">
+                  <input required name="password_baru_ulangi" id="inputText3" type="password" class="form-control">
                 </div>
                 <div class="custom-file mb-3">
                   <input type="submit" href="#" class="centerHorizontal btn btn-primary" value="Ubah password"></a>

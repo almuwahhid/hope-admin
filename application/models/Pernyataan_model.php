@@ -50,8 +50,23 @@ class Pernyataan_model extends CI_Model {
 		return $query->row();
 	}
 
+	public function getSubAspekBySubAspek($id_sub_aspek){
+		$this->db->where('id_sub_aspek', $id_sub_aspek);
+		$this->db->select('*');
+		$query = $this->db->get('sub_aspek');
+		return $query->row();
+	}
+
+	public function getAspekByAspek($id_aspek){
+		$this->db->where('id_aspek', $id_aspek);
+		$this->db->select('*');
+		$query = $this->db->get('aspek');
+		return $query->row();
+	}
+
   public function getAspekIndikator(){
-		$this->db->join('aspek', 'aspek.id_aspek = indikator.id_aspek');
+		$this->db->join('sub_aspek', 'sub_aspek.id_sub_aspek = indikator.id_sub_aspek');
+		$this->db->join('aspek', 'aspek.id_aspek = sub_aspek.id_aspek');
 		$this->db->select('*');
     $query = $this->db->get('indikator');
 		return $query->result();
@@ -59,8 +74,11 @@ class Pernyataan_model extends CI_Model {
 
 	public function getPernyataan($id_indikator){
 		$this->db->order_by('id_pernyataan','RANDOM');
-		$this->db->where('id_indikator', $id_indikator);
+		$this->db->where('indikator.id_indikator', $id_indikator);
     $this->db->join('jenis_pernyataan', 'jenis_pernyataan.id_jenis_pernyataan = pernyataan.id_jenis_pernyataan');
+		$this->db->join('indikator', 'pernyataan.id_indikator = indikator.id_indikator');
+		$this->db->join('sub_aspek', 'indikator.id_sub_aspek = sub_aspek.id_sub_aspek');
+		$this->db->join('aspek', 'aspek.id_aspek = sub_aspek.id_aspek');
 		$this->db->select('*');
 		$query = $this->db->get('pernyataan');
 		return $query->result();

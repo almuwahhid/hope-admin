@@ -1,10 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-require_once(APPPATH.'controllers/BaseController.php');
+require_once(APPPATH.'controllers/BaseAdminController.php');
 // require(APPPATH.'/libraries/REST_Controller.php');
 // use Restserver\Libraries\REST_Controller;
 
-class User extends BaseController {
+class User extends BaseAdminController {
   public function __construct() {
     parent::__construct();
     $this->load->helper('url');
@@ -46,7 +46,7 @@ class User extends BaseController {
 
   public function index() {
     $users = $this->users_model->get_users();
-    parent::getView('m_konfirmasiuser/listuser', 'user', $users);
+    parent::getView('m_user/list_user', 'user', $users);
   }
 
   public function detail($id_member){

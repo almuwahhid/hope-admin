@@ -72,10 +72,10 @@
                       <?php
                     }
                      ?>
-                     <tr class="border-0">
+                     <!-- <tr class="border-0">
                        <td class="border-0">Dengan siapa dia mendiskusikan hal tersebut?</td>
                        <td class="border-0"><?= $data['detail']->keterangan ?></td>
-                     </tr>
+                     </tr> -->
                   </tbody>
                 </table>
               </div>

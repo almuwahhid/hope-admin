@@ -92,7 +92,10 @@
                                 </div>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link<?php if($page == "user")echo " active";?> " href="<?= base_url()."users"?>"><i class="fas fa-users"></i>Users</a>
+                                <a class="nav-link<?php if($page == "user")echo " active";?> " href="<?= base_url()."users"?>"><i class="fas fa-users"></i>Pengguna</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link<?php if($page == "survey")echo " active";?> " href="<?= base_url()."survey"?>"><i class="far fa-list-alt"></i>Survey Pengguna</a>
                             </li>
                         </ul>
                     </div>

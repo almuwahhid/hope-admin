@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="page-header">
-          <h2 class="pageheader-title">Daftar Biodata Pengguna </h2>
+          <h2 class="pageheader-title">Daftar Survey Pengguna </h2>
           <p class="pageheader-text">Nulla euismod urna eros, sit amet scelerisque torton lectus vel mauris facilisis faucibus at enim quis massa lobortis rutrum.</p>
           <!-- <div class="page-breadcrumb">
             <nav aria-label="breadcrumb">
@@ -37,11 +37,10 @@
                   <thead class="bg-light">
                     <tr class="border-0">
                       <th class="border-0 centerHorizontal" style="width:20px">No</th>
-                      <th class="border-0">Email</th>
                       <th class="border-0">Nama</th>
-                      <th class="border-0">Jenis Kelamin</th>
+                      <th class="border-0 text-center">Jenis Kelamin</th>
                       <th class="border-0 text-center">Semester</th>
-                      <th class="border-0 text-center">Detail</th>
+                      <th class="border-0 text-center">Lihat Survey</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -53,19 +52,16 @@
                           <?= ++$no;?>
                         </td>
                         <td>
-                          <?= $user->email ?>
-                        </td>
-                        <td>
                           <?= $user->nama ?>
                         </td>
-                        <td>
+                        <td class="text-center">
                           <?= $user->jenis_kelamin ?>
                         </td>
                         <td class="text-center">
                           <?= $user->semester == "" ? "-":$user->semester ?>
                         </td>
                         <td class="text-center">
-                          <a href='<?= base_url()."user/detail/".$user->id_user; ?>'>
+                          <a href='<?= base_url()."survey/detail/".$user->id_user; ?>'>
                             <i class="fas fa-search"></i>
                           </a>
                         </td>

@@ -150,6 +150,8 @@ class Users_model extends CI_Model {
 	 * @param mixed $access
 	 * @return bool
 	 */
+
+	 
 	public function check_access($access){
 		return $access === 'admin' ? true : false;
 	}

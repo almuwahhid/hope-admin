@@ -13,19 +13,21 @@ class Survey extends BaseAdminController {
 	}
 
 	public function index() {
-    $page = $this->input->get('p');
-		$booking = $this->users_model->get($page);
-		$jumlah = $this->users_model->totalUser();
-    $asd['user'] = $booking;
-    $asd['jumlah'] = $jumlah;
-    $asd['page'] = $page;
-    parent::getView('m_user/list_user', 'survey', $asd);
+		$users = $this->users_model->get_users();
+    parent::getView('m_survey/daftar_survey_user', 'survey', $users);
 	}
 
 	public function detail($id_user){
     $data = array();
-		$data['survey'] = $this->survey_model->laporanSurveySaya($id_user);
+
+		$survey = $this->survey_model->laporanSurveySaya($id_user);
+		foreach ($survey as $k => $model) {
+			$realdate = parent::parseTanggal(explode(" ", $model->tanggal_survey)[0]);
+			$survey[$k]->realdate = $realdate;
+		}
+		$data['survey'] = $survey;
     $data['id_user'] = $id_user;
+    $data['user'] = $this->users_model->get_user_by_id($id_user);
 		parent::getView('m_survey/list_survey', 'survey', $data);
 	}
 
@@ -33,6 +35,8 @@ class Survey extends BaseAdminController {
     $data = array();
 		$id_user = $this->input->get('id_user');
 		$data['survey'] = $this->survey_model->getSurveyById($id_survey);
+		$data['survey']->realdate = parent::parseTanggal(explode(" ", $data['survey']->tanggal_survey)[0]);
+		$data['user'] = $this->users_model->get_user_by_id($id_user);
 
 		$pertanyaan = array();
 		foreach ($this->survey_model->getPertanyaanByIdSurvey($id_survey) as $k => $pyt) {

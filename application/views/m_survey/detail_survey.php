@@ -12,8 +12,8 @@
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="<?= base_url('survey') ?>" class="breadcrumb-link">Survey</a></li>
-                <li class="breadcrumb-item"><a href="<?= base_url('survey/detail/'.$data['id_user']) ?>" class="breadcrumb-link">Detail</a></li>
-                <li class="breadcrumb-item active" aria-current="page"><?= explode(" ",$data['survey']->tanggal_survey)[0] ?></li>
+                <li class="breadcrumb-item"><a href="<?= base_url('survey/detail/'.$data['id_user']) ?>" class="breadcrumb-link"><?= $data['user']->nama ?></a></li>
+                <li class="breadcrumb-item active" aria-current="page"><?= $data['survey']->realdate ?></li>
               </ol>
             </nav>
           </div>

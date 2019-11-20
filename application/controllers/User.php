@@ -49,15 +49,18 @@ class User extends BaseAdminController {
     parent::getView('m_user/list_user', 'user', $users);
   }
 
+
   public function detail($id_member){
-    $model = $this->users_model->get_detail_user($id_member);
-
-
+    $model = $this->users_model->get_user_by_id($id_member);
 		if(!$model) {
-			echo "Wisata tidak ada";die();
+			echo "User tidak tersedia";die();
 		} else {
+      $model->birhtdate = parent::parseTanggal($model->tgl_lahir);
+      // echo "string".$model->birhtdate;
+      $model->tgl = parent::parseTanggal($model->tgl_lahir);
       $data = $model;
-      parent::getView('m_konfirmasiuser/detailuser', 'user', $data);
+
+      parent::getView('m_user/detail_user', 'user', $data);
     }
   }
 

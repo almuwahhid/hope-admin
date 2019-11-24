@@ -354,14 +354,22 @@ class Survey extends Base_api {
   public function checkIntervensiToday(){
     $result = array();
     $data = json_decode($this->input->post('data'));
-    $isTask = $this->survey_model->checkIntervensiToday($data->id_user);
+    // $isTask = $this->survey_model->checkIntervensiToday($data->id_user);
     // echo $this->survey_model->isTaskCompletedBySurveySample($survey->id_survey);
-    if($isTask){
-      $result["result"] = "success";
-      $result["data"] = $isTask;
+    // if($isTask){
+    //   $result["result"] = "success";
+    //   $result["data"] = $isTask;
+    // } else {
+    //   $result["result"] = "failed";
+    //   $result["data"] = $this->survey_model->checkIntervensiTodaySample($data->id_user);
+    // }
+
+$jumlahSurvey = $this->survey_model->checkSurvey($data->id_user);
+
+    if($jumlahSurvey == 0){
+        $result["result"] = "success";
     } else {
-      $result["result"] = "failed";
-      $result["data"] = $this->survey_model->checkIntervensiTodaySample($data->id_user);
+        $result["result"] = "failed";
     }
     echo json_encode($result);
   }

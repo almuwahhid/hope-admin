@@ -363,7 +363,8 @@ class Survey_model extends CI_Model {
 
 	public function isTaskCompletedBySurvey($id_survey){
 		$this->db->where('id_survey', $id_survey);
-		$this->db->where("tanggal_task >= ", date('Y-m-d'));
+		// $this->db->where("tanggal_task >= ", date('Y-m-d'));
+		$this->db->where('tanggal_submit', "0000-00-00 00:00:00");
 		$this->db->join('pertanyaan_survey', 'pertanyaan_survey.id_pertanyaan_survey = task_pertanyaan.id_pertanyaan_survey');
 		$this->db->select('*');
 		return $this->db->get('task_pertanyaan')->result();

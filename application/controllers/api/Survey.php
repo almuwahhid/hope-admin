@@ -277,16 +277,19 @@ class Survey extends Base_api {
     $data = json_decode($this->input->post('data'));
     $surveySaya = $this->survey_model->surveySaya($data->id_user);
     foreach ($surveySaya as $k => $surveyq) {
+      $total_nilai = 0;
       $aspeks = $this->pernyataan_model->getAspek();
       $surveySaya[$k]->komentar_aspek = array();
       foreach ($aspeks as $z => $aspek) {
         $nilaiPertanyaanByAspek = $this->survey_model->getNilaiPertanyaanByAspek($surveyq->id_survey, $aspek->id_aspek);
+        $total_nilai += $nilaiPertanyaanByAspek;
         if($helper->klasifikasiKomentar($aspek, $nilaiPertanyaanByAspek) == "plus"){
           array_push($surveySaya[$k]->komentar_aspek, $this->pernyataan_model->getAspekByAspek($aspek->id_aspek)->plus_comment);
         } else {
           array_push($surveySaya[$k]->komentar_aspek, $this->pernyataan_model->getAspekByAspek($aspek->id_aspek)->negative_comment);
         }
       }
+      $surveySaya[$k]->nilai = $total_nilai;
     }
     // echo $this->survey_model->isTaskCompletedBySurveySample($survey->id_survey);
     if($surveySaya){

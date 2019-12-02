@@ -34,6 +34,7 @@ class Survey extends BaseAdminController {
 	public function pertanyaan($id_survey){
     $data = array();
 		$id_user = $this->input->get('id_user');
+		$data['id_survey'] = $id_survey;
 		$data['survey'] = $this->survey_model->getSurveyById($id_survey);
 		$data['survey']->realdate = parent::parseTanggal(explode(" ", $data['survey']->tanggal_survey)[0]);
 		$data['user'] = $this->users_model->get_user_by_id($id_user);

@@ -1,6 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 require_once(APPPATH.'controllers/BaseController.php');
+require 'vendor/autoload.php';
+
+use Spipu\Html2Pdf\Html2Pdf;
 
 class Laporan extends BaseController {
 	public function __construct() {
@@ -12,7 +15,7 @@ class Laporan extends BaseController {
 		    $this->load->model('main_model');
 		    $this->load->model('survey_model');
 		    $this->load->model('users_model');
-        $this->load->library('pdfgenerator');
+
 
 	}
 
@@ -30,10 +33,17 @@ class Laporan extends BaseController {
 	}
 
 	public function laporanbiodata(){
-		$data = json_decode($this->input->get('data'));
-		$html = $this->load->view('m_laporan/laporan_biodata', ['data' => $data], true);
-		$filename = 'report_'.time();
-		$this->pdfgenerator->generate($html, $filename, true, 'A4', 'portrait');
+		$id_user = $this->input->get('data');
+		$user = $this->users_model->get_user_by_id($id_user);
+		// parent::getView('m_laporan/laporan_biodata', 'laporan', ['data' => $user]);
+		$html = $this->load->view('m_laporan/laporan_biodata', ['data' => $user], true);
+
+		$html2pdf = new Html2Pdf();
+		$html2pdf->writeHTML($html);
+		$html2pdf->output();
+
+		// $this->html2pdf->html('<h1>Some Title</h1><p>Some content in here</p>');
+		// $this->html2pdf->create('save');
 	}
 
 	public function laporansurvey($id_user){
@@ -42,21 +52,62 @@ class Laporan extends BaseController {
 		// $id_user = $this->input->get('id_user');
 		// $id_user = base64_decode($iduser);
 		$data['user'] = $this->users_model->get_user_by_id($id_user);
-		$data['survey'] = $this->survey_model->laporanSurveySaya($id_user);
-		$data['grafik'] = array();
+		$data['user']->age = parent::getAge($data['user']->tgl_lahir);
 
-    $surveySaya = $this->survey_model->surveySaya($id_user);
-    if($surveySaya){
-      foreach ($surveySaya as $k => $survey) {
-        $survey->nilai = $this->survey_model->getNilaiPertanyaanBySurvey($survey->id_survey);
-        array_push($data["grafik"], $survey);
-      }
+
+    $survey = $this->survey_model->laporanSurveySaya($id_user);
+		foreach ($survey as $k => $model) {
+			$realdate = parent::parseTanggal(explode(" ", $model->tanggal_survey)[0]);
+			$survey[$k]->realdate = $realdate;
+		}
+		$data['survey'] = $survey;
+		//
+    // if($surveySaya){
+    //   foreach ($surveySaya as $k => $survey) {
+    //     $survey->nilai = $this->survey_model->getNilaiPertanyaanBySurvey($survey->id_survey);
+    //     array_push($data["grafik"], $survey);
+    //   }
+    // }
+		// parent::getView('m_laporan/laporan_survey', 'laporan', ['data' => $data]);
+
+		$html = $this->load->view('m_laporan/laporan_survey', ['data' => $data], true);
+
+		$html2pdf = new Html2Pdf();
+		$html2pdf->writeHTML($html);
+		$html2pdf->output();
+
+		// $html = $this->load->view('m_laporan/laporan_survey', ['data' => $data]);
+	}
+
+	public function detaillaporansurvey($id_survey){
+		$data = array();
+		// $user = json_decode($this->input->get('data'));
+		// $id_user = $this->input->get('id_user');
+		// $id_user = base64_decode($iduser);
+
+		$survey = $this->survey_model->getDetailSurveyById($id_survey);
+		 $realdate = parent::parseTanggal(explode(" ", $survey->tanggal_survey)[0]);
+		$data['survey'] = $survey;
+
+		$detailSurveySaya = $this->survey_model->detailSurveySaya($id_survey);
+		$data['detailsurvey'] = $detailSurveySaya;
+
+		$task_pertanyaan = $this->survey_model->getTaskPertanyaanSurvey($id_survey);
+		if($task_pertanyaan){
+      $data["istaskpertanyaan"] = true;
+      $data["taskpertanyaan"] = $task_pertanyaan;
+    } else {
+      $data["istaskpertanyaan"] = false;
     }
 
-		$html = $this->load->view('m_laporan/laporan_survey', ['data' => $data]);
-		// $html = $this->load->view('m_laporan/laporan_survey', ['data' => $data], true);
-		// $filename = 'report_'.time();
-		// $this->pdfgenerator->generate($html, $filename, true, 'A4', 'portrait');
+		$data['user'] = $this->users_model->get_user_by_id($survey->id_user);
+		$data['user']->age = parent::getAge($data['user']->tgl_lahir);
+
+		$html = $this->load->view('m_laporan/laporan_detail_survey', ['data' => $data], true);
+
+		$html2pdf = new Html2Pdf();
+		$html2pdf->writeHTML($html);
+		$html2pdf->output();
 	}
 
 	public function detail_laporan_tahunan(){

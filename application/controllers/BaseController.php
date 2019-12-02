@@ -39,5 +39,38 @@
     	$user = $this->session->userdata();
     	return $user;
     }
+
+    public function getAge($lahirku){
+      $birthDate  = $lahirku;
+       $today      = date("Y-m-d");
+
+       $dateA      = new DateTime($today);
+       $dateB      = new DateTime($birthDate);
+
+       $dateDiff   = $dateA->diff($dateB);
+       // $age        = "{$dateDiff->y} Years, {$dateDiff->m} Months and {$dateDiff->d} Days";
+
+       // return var_dump($age);
+       return $dateDiff->y;
+    }
+
+    function parseTanggal($tanggal){
+      $bulan = array (
+        1 =>   'Januari',
+        'Februari',
+        'Maret',
+        'April',
+        'Mei',
+        'Juni',
+        'Juli',
+        'Agustus',
+        'September',
+        'Oktober',
+        'November',
+        'Desember'
+      );
+      $pecahkan = explode('-', $tanggal);
+      return $pecahkan[2] . ' ' . $bulan[ (int)$pecahkan[1] ] . ' ' . $pecahkan[0];
+    }
 }
 ?>

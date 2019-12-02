@@ -30,6 +30,18 @@
         <!-- recent orders  -->
         <!-- ============================================================== -->
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <!-- <a target="_blank" href="<?= base_url('laporan/laporansurvey/')."?id_user=".$data['id_user'] ?>" class="btn btn-primary">Download Laporan</a> -->
+          <?php
+          if(count($data["detail"]) == 0){
+
+            } else {
+              ?>
+              <a target="_blank" href="<?= base_url('laporan/detaillaporansurvey/').$data['id_survey'] ?>" class="btn btn-primary">Download Laporan</a>
+              <!-- <a target="_blank" href="#" class="btn btn-primary">Download Laporan</a> -->
+              <?php
+            }?>
+        </div>
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
           <div class="card">
             <h5 class="card-header">Detail Survey</h5>
             <div class="card-body p-0">

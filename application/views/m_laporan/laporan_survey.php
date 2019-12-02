@@ -24,10 +24,7 @@ function tanggal($tanggal){
   <title>Laporan Survey Pengguna</title>
   <style type="text/css">
     #outtable{
-      padding: 20px;
-      border:1px solid #e3e3e3;
-      width:650px;
-      border-radius: 5px;
+
     }
     .short{
 
@@ -44,8 +41,8 @@ function tanggal($tanggal){
       border: 1px solid #e3e3e3;
     }
     .withborder td{
-      border-bottom: 1px solid #e3e3e3;
-      border-right: 1px solid #e3e3e3;
+
+      border: 1px solid #e3e3e3;
       padding: 10px;
     }
     .number{
@@ -85,110 +82,8 @@ function tanggal($tanggal){
   <!-- Main canvg code -->
   <script src="https://cdn.jsdelivr.net/npm/canvg/dist/browser/canvg.min.js"></script>
 
-  <?php
-    /* Mengambil query report*/
-    foreach($data['grafik'] as $result){
-        $tanggal[] = $result->tanggal_survey; //ambil bulan
-        $value[] = (float) $result->nilai; //ambil nilai
-    }
-    /* end mengambil query*/
-
-?>
-
-  <script type="text/javascript">
-  $(function () {
-    var x = $('#report').highcharts({
-      chart: {
-        type: 'column',
-        margin: 75,
-        options3d: {
-          enabled: false,
-          alpha: 10,
-          beta: 25,
-          depth: 70
-        }
-      },
-      title: {
-        text: 'Grafik Survey',
-        style: {
-          fontSize: '18px',
-          fontFamily: 'Verdana, sans-serif'
-        }
-      },
-      subtitle: {
-        text: 'RIDE',
-        style: {
-          fontSize: '15px',
-          fontFamily: 'Verdana, sans-serif'
-        }
-      },
-      plotOptions: {
-        column: {
-          depth: 25
-        }
-      },
-      credits: {
-        enabled: false
-      },
-      xAxis: {
-        categories:  <?php echo json_encode($tanggal);?>
-      },
-      exporting: {
-        enabled: false
-      },
-      yAxis: {
-        title: {
-          text: 'Jumlah'
-        },
-      },
-      tooltip: {
-        formatter: function() {
-          return 'The value for <b>' + this.x + '</b> is <b>' + Highcharts.numberFormat(this.y,0) + '</b>, in '+ this.series.name;
-        }
-      },
-      plotOptions: {
-        line: {
-          animation: false
-        }
-      },
-      series: [{
-        name: 'Report Data',
-        data: <?php echo json_encode($value);?>,
-        shadow : true,
-        dataLabels: {
-          enabled: true,
-          color: '#e3e3e3',
-          align: 'center',
-          formatter: function() {
-            return Highcharts.numberFormat(this.y, 0);
-          }, // one decimal
-          y: 0, // 10 pixels down from the top
-          style: {
-            fontSize: '13px',
-            fontFamily: 'Verdana, sans-serif'
-          }
-        }
-      }]
-    });
-
-    // exportChart(x);
-  });
-  function exportChart(x) {
-    console.log("exporting SVG");
-    var svg = canvg(document.getElementById('canvas'), getSVG(x), {
-      //ignoreDimensions: true
-    });
-  }
-
-  function getSVG(x) {
-    var chart = $('#report').highcharts();
-    var svg = chart.getSVG();
-    return svg;
-  }
-</script>
-
 </head>
-<body>
+<body style="font-family: arial">
   <!-- In production server. If you choose this, then comment the local server and uncomment this one-->
   <!-- <img src="<?php // echo $_SERVER['DOCUMENT_ROOT']."/media/dist/img/no-signal.png"; ?>" alt=""> -->
   <!-- In your local server -->
@@ -197,69 +92,97 @@ function tanggal($tanggal){
   <?php
   setlocale(LC_ALL, 'IND');
   ?>
-  <div style="width:100%;position:absolute">
-    <img style="width:45px;height: 45px;float:left;margin-right:12px" src="<?php echo base_url('assets/images/beres_logo.png'); ?>" alt="">
-    <div style="float:left">
-      <div style="font-size:18px">
-        <span style="text-size:20px;text-align:center">RIDE</span>
-      </div>
-      <span style="font-size:12px;margin-bottom: 8px;text-align:center">Religion, Identity Dynamic, Energy - Ride Your Better Life! </span>
+  <div style="width:100%;height:20px;position:relative">
+    <img style="width:80px;height: 80px;float:left;margin-right:24px" src="<?= base_url() ?>assets/images/logo_uny.png" alt="">
+    <div style="float:center;text-align:center;width:100%;position:absolute;margin-top:10px">
+      <p style="float:center">
+        <span style="font-size:25px;text-align:center">H.O.P.E.</span><br><br>
+        <span style="font-size:15px;margin-bottom: 8px;text-align:center">HELP OCCUPATION PERFORMANCE EFFECTIVELY</span>
+
+      </p>
     </div>
+    <img style="width:80px;height: 80px;float:right;" src="<?= base_url() ?>assets/images/hope.png" alt="">
   </div>
-  <div style="width:100%;position:relative;padding-top:50px">
-    <hr>
+  <hr style="height:2px;background-color:#333;margin-top:15px">
+  <div style="width:100%;position:relative;margin-right:10px">
+    <h4>Laporan Survey <?= $data['user']->nama ?></h4>
     <br>
-    <span style="text-size:12px;margin-bottom: 8px;text-align:center">A. Biodata Pengguna</span>
+    <b><span style="text-size:12px;margin-bottom: 8px;text-align:center">Data</span></b>
     <div style="margin-top: 20px;margin-left:10px">
       <table style="border-color:black">
         <tbody>
           <tr>
-            <td style="width:150px" class="border-0">Email</td>
-            <td style="width:2px">:</td>
-            <td class="border-0" style="width : 450px"><?= $data['user']->email ?></td>
+            <td style="width:280px" class="border-0">
+              <img style="width:16px;height: 16px;float:left;margin-right:10px" src="<?= base_url() ?>assets/images/nametag.png" alt="">
+              <div style="float:left;margin-bottom:2px">
+                <b style="font-size:12">Nama</b>
+              </div>
+              <?= $data['user']->nama ?>
+            </td>
+            <td style="width:280px" class="border-0">
+              <img style="width:14px;height: 16px;float:left;margin-right:10px" src="<?= base_url() ?>assets/images/university.png" alt="">
+              <div style="float:left;margin-bottom:2px">
+                <b style="font-size:12">Universitas</b>
+              </div>
+              <?= $data['user']->universitas ?>
+            </td>
           </tr>
           <tr>
-            <td style="width:150px" class="border-0">Nama Panjang</td>
-            <td style="width:2px">:</td>
-            <td class="border-0"><?= $data['user']->nama ?></td>
+            <td style="width:280px" class="border-0">
+              <img style="width:16px;height: 16px;float:left;margin-right:10px" src="<?= base_url() ?>assets/images/birthdate.png" alt="">
+              <div style="float:left;margin-bottom:2px">
+                <b style="font-size:12">Umur</b>
+              </div>
+              <?= $data['user']->age ?> Tahun
+            </td>
+            <td style="width:280px" class="border-0">
+              <img style="width:14px;height: 16px;float:left;margin-right:10px" src="<?= base_url() ?>assets/images/classroom.png" alt="">
+              <div style="float:left;margin-bottom:2px">
+                <b style="font-size:12">Program Studi</b>
+              </div>
+              <?= $data['user']->program_studi ?>
+            </td>
           </tr>
           <tr>
-            <td style="width:150px" class="border-0">Jenis Kelamin</td>
-            <td style="width:2px">:</td>
-            <td class="border-0"><?= $data['user']->jenis_kelamin ?></td>
+            <td style="width:280px" class="border-0">
+              <img style="width:16px;height: 16px;float:left;margin-right:10px" src="<?= base_url() ?>assets/images/phone.png" alt="">
+              <div style="float:left;margin-bottom:2px">
+                <b style="font-size:12">Nomor Telepon</b>
+              </div>
+              <?= $data['user']->telp ?>
+            </td>
+            <td style="width:280px" class="border-0">
+              <img style="width:14px;height: 16px;float:left;margin-right:10px" src="<?= base_url() ?>assets/images/class.png" alt="">
+              <div style="float:left;margin-bottom:2px">
+                <b style="font-size:12">Semester</b>
+              </div>
+              Semester <?= $data['user']->semester ?>
+            </td>
           </tr>
           <tr>
-            <td style="width:150px" class="border-0">Tanggal Lahir</td>
-            <td style="width:2px">:</td>
-            <td class="border-0 w-100"><?php
-            $timestamp = strtotime($data['user']->tgl_lahir);
-            echo date('m/d/Y', $timestamp)
-            ?></td>
+            <td style="width:280px" class="border-0">
+              <img style="width:16px;height: 16px;float:left;margin-right:10px" src="<?= base_url() ?>assets/images/email.png" alt="">
+              <div style="float:left;margin-bottom:2px">
+                <b style="font-size:12">Email</b>
+              </div>
+              <?= $data['user']->email ?>
+            </td>
+            <td style="width:280px" class="border-0">
+              <img style="width:14px;height: 16px;float:left;margin-right:10px" src="<?= base_url() ?>assets/images/job.png" alt="">
+              <div style="float:left;margin-bottom:2px">
+                <b style="font-size:12">Pekerjaan Impian</b>
+              </div>
+              <?= $data['user']->pekerjaan_impian ?>
+            </td>
           </tr>
           <tr>
-            <td style="width:150px" class="border-0">Fakultas</td>
-            <td style="width:2px">:</td>
-            <td class="border-0"><?= $data['user']->fakultas ?></td>
-          </tr>
-          <tr>
-            <td style="width:150px" class="border-0">Alamat Asal</td>
-            <td style="width:2px">:</td>
-            <td class="border-0"><?= $data['user']->alamat_asal ?></td>
-          </tr>
-          <tr>
-            <td style="width:150px" class="border-0">Alamat Tinggal</td>
-            <td style="width:2px">:</td>
-            <td class="border-0"><?= $data['user']->alamat_tinggal ?></td>
-          </tr>
-          <tr>
-            <td style="width:150px" class="border-0">Agama</td>
-            <td style="width:2px">:</td>
-            <td class="border-0"><?= $data['user']->agama ?></td>
-          </tr>
-          <tr>
-            <td style="width:150px" class="border-0">Nomor WA</td>
-            <td style="width:2px">:</td>
-            <td class="border-0"><?= $data['user']->no_wa ?></td>
+            <td style="width:280px" class="border-0">
+              <img style="width:16px;height: 16px;float:left;margin-right:10px" src="<?= base_url() ?>assets/images/gender.png" alt="">
+              <div style="float:left;margin-bottom:2px">
+                <b style="font-size:12">Jenis Kelamin</b>
+              </div>
+              <?= $data['user']->jenis_kelamin ?>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -267,18 +190,17 @@ function tanggal($tanggal){
   </div>
 
    <br/><br/><br/><br/>
-   <span style="text-size:12px;margin-bottom: 8px;text-align:center">B. Hasil Survey</span>
-   <div id="outtable" style="margin-top: 20px;margin-left:10px">
+   <b><span style="text-size:12px;margin-bottom: 8px;text-align:center">Survey User</span></b>
+   <div id="outtable" style="margin-top: 20px;margin-left:-80px">
  	  <table style="border-color:black">
       <thead class="withborder">
 	  		<tr>
 	  			<th class="short number" style="text-align:center">No</th>
 	  			<th class="normal" style="text-align:center">Tanggal Survey</th>
-	  			<th class="normal" style="text-align:center">Skor Co</th>
-          <th class="normal" style="text-align:center">Skor IE</th>
-          <th class="normal" style="text-align:center">Skor RC</th>
+	  			<th class="normal" style="text-align:center">Skor Eksplorasi</th>
+          <th class="normal" style="text-align:center">Skor Komitmen</th>
 	  			<th class="normal" style="text-align:center">Hasil Survey</th>
-          <th class="normal" style="text-align:center">Deskripsi</th>
+          <th class="normal" style="text-align:center;width:80px">Deskripsi</th>
 	  		</tr>
 	  	</thead>
        <tbody class="withborder">
@@ -289,10 +211,7 @@ function tanggal($tanggal){
                <?= $no;?>
              </td>
              <td>
-               <?php
-                 $timestamp = strtotime($datas->tanggal_survey);
-                 echo date('m/d/Y H:i:s', $timestamp)
-               ?>
+               <?= tanggal(explode(' ', $datas->tanggal_survey)[0]) ?>
              </td>
              <?php foreach($datas->identitas_survey as $x): ?>
                <td style="text-align:center">
@@ -303,7 +222,7 @@ function tanggal($tanggal){
              <td>
                <?= $datas->nama_status ?>
              </td>
-             <td>
+             <td style="width:190px;text-align:justify">
                <?= $datas->deskripsi_status ?>
              </td>
            </tr>
@@ -312,31 +231,12 @@ function tanggal($tanggal){
        </tbody>
  	  </table>
  	 </div>
-
-   <br/><br/><br/><br/>
-   <span style="text-size:12px;margin-bottom: 8px;text-align:center">C. Grafik Survey</span>
-   <div id="outtable" style="margin-top: 20px;margin-left:10px">
- 	  <div id="report">
-
-    </div>
-    <!-- <canvas id="canvas" style="width: 100%; height: 300px; margin: 0 auto; border:1px solid blue;"></canvas> -->
- 	 </div>
-   <br/><br/><br/><br/>
+   <br><br>
    <div style="width:700px;text-align:right;;margin-top:20px">
      <!-- RIDE Application, <?= strftime('%d %B %Y') ?> -->
-     RIDE Application, <?= tanggal(date('Y-m-d')) ?>
-     <br><br><br><br>
-     Aulia Diah Pratiwi, S. Pd. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     H.O.P.E., <?= tanggal(date('Y-m-d')) ?>
+     <br><br><br><br><br><br>
+     Chalida, S.Pd. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
    </div>
 </body>
-
-<script>
-  setTimeout(myFunction, 1000);
-  function myFunction(){
-    print();
-    // close();
-    // open(location, '_self').close();
-    // window.onafterprint = window.close();
-  }
-</script>
 </html>

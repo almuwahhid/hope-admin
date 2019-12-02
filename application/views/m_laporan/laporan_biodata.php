@@ -45,7 +45,7 @@
   <!-- <img src="<?php // echo $_SERVER['DOCUMENT_ROOT']."/media/dist/img/no-signal.png"; ?>" alt=""> -->
   <!-- In your local server -->
 
-  <!-- <img src="logo_horizontal.png" alt="" style="margin-top:-5px" class="user-avatar-md rounded-circle"> &nbsp; &nbsp;  -->
+  <img src="<?= base_url() ?>profile/man.png" alt="" style="margin-top:-5px" class="user-avatar-md rounded-circle"> &nbsp; &nbsp;
   <?php
   setlocale(LC_ALL, 'IND');
   ?>
@@ -79,24 +79,16 @@
           ?></td>
         </tr>
         <tr>
-          <td style="width:150px" class="border-0">Fakultas</td>
-          <td class="border-0"><?= $data->fakultas ?></td>
+          <td style="width:150px" class="border-0">Program Studi</td>
+          <td class="border-0"><?= $data->program_studi ?></td>
         </tr>
         <tr>
-          <td style="width:150px" class="border-0">Alamat Asal</td>
-          <td class="border-0"><?= $data->alamat_asal ?></td>
+          <td style="width:150px" class="border-0">Pekerjaan Impian</td>
+          <td class="border-0"><?= $data->pekerjaan_impian ?></td>
         </tr>
         <tr>
-          <td style="width:150px" class="border-0">Alamat Tinggal</td>
-          <td class="border-0"><?= $data->alamat_tinggal ?></td>
-        </tr>
-        <tr>
-          <td style="width:150px" class="border-0">Agama</td>
-          <td class="border-0"><?= $data->agama ?></td>
-        </tr>
-        <tr>
-          <td style="width:150px" class="border-0">Nomor WA</td>
-          <td class="border-0"><?= $data->no_wa ?></td>
+          <td style="width:150px" class="border-0">Nomor Telepon</td>
+          <td class="border-0"><?= $data->telp ?></td>
         </tr>
       </tbody>
 	  </table>

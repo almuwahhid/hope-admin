@@ -35,8 +35,8 @@
 
             } else {
               ?>
-              <!-- <a target="_blank" href="<?= base_url('laporan/laporansurvey/').$data['id_user'] ?>" class="btn btn-primary">Download Laporan</a> -->
-              <a target="_blank" href="#" class="btn btn-primary">Download Laporan</a>
+              <a target="_blank" href="<?= base_url('laporan/laporansurvey/').$data['id_user'] ?>" class="btn btn-primary">Download Laporan</a>
+              <!-- <a target="_blank" href="#" class="btn btn-primary">Download Laporan</a> -->
               <?php
             }?>
         </div>

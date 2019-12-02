@@ -54,6 +54,20 @@ class Survey_model extends CI_Model {
 		return $query->row();
 	}
 
+	public function getDetailSurveyById($id_survey){
+		$result = array();
+		$this->db->where('id_survey', $id_survey);
+		$this->db->join('status_identitas_religius', 'survey.id_status_identitas_religius = status_identitas_religius.id_status_identitas_religius');
+		$this->db->select('*');
+		$survey = $this->db->get('survey');
+
+		$result = $survey->row();
+		$result->identitas_survey = array();
+		$result->identitas_survey = $this->scoreIdentitasBySurvey($id_survey);
+		
+		return $result;
+	}
+
 	public function addSurvey($params){
 		return $this->db->insert("survey", $params);
 	}

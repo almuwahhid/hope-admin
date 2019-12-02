@@ -31,6 +31,7 @@ class Biodata extends Base_api {
                         'program_studi' => $data->program_studi,
                         'telp' => $data->telp,
                         'semester' => $data->semester,
+                        'universitas' => $data->universitas,
                         'pekerjaan_impian' => $data->pekerjaan_impian,
                         'photo_profil' => $data->id_user . '.png');
         $update = $this->main_model->update($params, 'user', ['id_user' => $data->id_user]);

@@ -77,11 +77,11 @@ class Survey extends Base_api {
     $result = array();
     $pertanyaan = array(
                 'id_survey'           => $data->id_survey,
-                'id_pernyataan'           => $$pernyataan->id_pernyataan,
+                'id_pernyataan'           => $pernyataan->id_pernyataan,
                 'nilai_pertanyaan'           => $data->nilai_pertanyaan,
                 'nama_nilai_pertanyaan'           => $data->nama_nilai_pertanyaan
                 );
-    $process = $this->survey_model->addPertanyaanSurvey($data);
+    $process = $this->survey_model->addPertanyaanSurvey($pertanyaan);
 
     if($process){
       $result["indikator"] = false;

@@ -13,8 +13,26 @@ class Survey extends BaseAdminController {
 	}
 
 	public function index() {
-		$users = $this->users_model->get_users();
-    parent::getView('m_survey/daftar_survey_user', 'survey', $users);
+		$sortby = $this->input->get('sortby');
+		$users = $this->users_model->get_usersby($sortby);
+		$datas = array();
+		$datas['sortby'] = ($sortby == "" ? "newest" : "alphabetic");
+
+		$datas['users'] = array();
+		foreach ($users as $k => $pyt) {
+			$pyt->total = $this->survey_model->totalSurveyUser($pyt->id_user);
+			array_push($datas['users'], $pyt);
+		}
+    parent::getView('m_survey/daftar_survey_user', 'survey', $datas);
+	}
+
+	public function sort(){
+    $sortby = $this->input->post('sortby');
+		if($sortby == "alphabetic") {
+			redirect('survey?sortby=alphabetic');
+		} else {
+			redirect('survey');
+		}
 	}
 
 	public function detail($id_user){

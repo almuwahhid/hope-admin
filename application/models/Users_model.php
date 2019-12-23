@@ -120,6 +120,18 @@ class Users_model extends CI_Model {
 		return $query->result();
 	}
 
+	public function get_usersby($sortby) {
+		if($sortby == "alphabetic"){
+			$s = "nama";
+			$this->db->order_by($s, 'ASC');
+		} else {
+			$s = "id_user";
+			$this->db->order_by($s, 'DESC');
+		}
+		$query = $this->db->get('user');
+		return $query->result();
+	}
+
 	/**
 	 * get_admin_id_from function.
 	 *
@@ -151,7 +163,7 @@ class Users_model extends CI_Model {
 	 * @return bool
 	 */
 
-	 
+
 	public function check_access($access){
 		return $access === 'admin' ? true : false;
 	}

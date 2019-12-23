@@ -33,6 +33,22 @@
             <h5 class="card-header">Daftar Pengguna</h5>
             <div class="card-body p-0">
               <div class="table-responsive">
+                <form action="<?=base_url('survey/sort')?>" method="post" enctype="multipart/form-data">
+                  <div class="w-100" style="margin-top:10px;margin-bottom:10px">
+                    <div style="float:right">
+                      <input type="submit" href="#" class="btn btn-primary" value="Terapkan"/>
+                    </div>
+                    <div class="col-md-3" style="float:right">
+                      <select class="form-control" id="sel1" name="sortby">
+                        <option <?= ($data['sortby'] == "alphabetic" ? "selected" : "") ?> value="alphabetic">Alphabetic</option>
+                        <option <?= ($data['sortby'] == "newest" ? "selected" : "") ?> value="newest">Newest</option>
+                      </select>
+                    </div>
+                    <div class="col-md-1" style="float:right;padding-top:8px;text-align:right">
+                      Sort by :
+                    </div>
+                  </div>
+                </form>
                 <table class="table">
                   <thead class="bg-light">
                     <tr class="border-0">
@@ -40,13 +56,14 @@
                       <th class="border-0">Nama</th>
                       <th class="border-0 text-center">Jenis Kelamin</th>
                       <th class="border-0 text-center">Semester</th>
+                      <th class="border-0 text-center">Jumlah Survey</th>
                       <th class="border-0 text-center">Lihat Survey</th>
                     </tr>
                   </thead>
                   <tbody>
                     <?php
                     $no = 0;
-                    foreach ($data as $k => $user) { ?>
+                    foreach ($data['users'] as $k => $user) { ?>
                       <tr>
                         <td class="centerHorizontal text-center">
                           <?= ++$no;?>
@@ -59,6 +76,9 @@
                         </td>
                         <td class="text-center">
                           <?= $user->semester == "" ? "-":$user->semester ?>
+                        </td>
+                        <td class="text-center">
+                          <?= $user->total ?>
                         </td>
                         <td class="text-center">
                           <a href='<?= base_url()."survey/detail/".$user->id_user; ?>'>

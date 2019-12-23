@@ -30,6 +30,14 @@ class Survey_model extends CI_Model {
 		return $this->db->count_all_results();
 	}
 
+	public function totalSurveyUser($id_user){
+		$this->db->where('id_user', $id_user);
+		$this->db->join('status_identitas_religius', 'survey.id_status_identitas_religius = status_identitas_religius.id_status_identitas_religius');
+		$this->db->select('*');
+    $this->db->from('survey');
+		return $this->db->count_all_results();
+	}
+
 	public function getTaskPertanyaanSurvey($id_survey){
 		$this->db->where('id_survey', $id_survey);
 		$this->db->join('pertanyaan_survey', 'pertanyaan_survey.id_pertanyaan_survey = task_pertanyaan.id_pertanyaan_survey');
@@ -64,7 +72,7 @@ class Survey_model extends CI_Model {
 		$result = $survey->row();
 		$result->identitas_survey = array();
 		$result->identitas_survey = $this->scoreIdentitasBySurvey($id_survey);
-		
+
 		return $result;
 	}
 

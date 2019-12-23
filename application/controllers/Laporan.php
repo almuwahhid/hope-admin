@@ -59,6 +59,15 @@ class Laporan extends BaseController {
 		foreach ($survey as $k => $model) {
 			$realdate = parent::parseTanggal(explode(" ", $model->tanggal_survey)[0]);
 			$survey[$k]->realdate = $realdate;
+			$task_pertanyaan = array();
+			$task_pertanyaan = $this->survey_model->getTaskPertanyaanSurvey($survey[$k]->id_survey);
+			if($task_pertanyaan){
+				$survey[$k]->istaskpertanyaan = true;
+				$survey[$k]->taskpertanyaan = $task_pertanyaan;
+			} else {
+				$survey[$k]->istaskpertanyaan = false;
+			}
+
 		}
 		$data['survey'] = $survey;
 		//

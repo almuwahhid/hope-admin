@@ -109,6 +109,7 @@ function tanggal($tanggal){
     <br>
     <b><span style="text-size:12px;margin-bottom: 8px;text-align:center">Data</span></b>
     <div style="margin-top: 20px;margin-left:10px">
+
       <table style="border-color:black">
         <tbody>
           <tr>
@@ -189,48 +190,107 @@ function tanggal($tanggal){
     </div>
   </div>
 
+  <?php $no=1; ?>
+  <?php foreach($data['survey'] as $datas): ?>
    <br/><br/><br/><br/>
    <b><span style="text-size:12px;margin-bottom: 8px;text-align:center">Survey User</span></b>
    <div id="outtable" style="margin-top: 20px;margin-left:-80px">
- 	  <table style="border-color:black">
-      <thead class="withborder">
-	  		<tr>
-	  			<th class="short number" style="text-align:center">No</th>
-	  			<th class="normal" style="text-align:center">Tanggal Survey</th>
-	  			<th class="normal" style="text-align:center">Skor Eksplorasi</th>
-          <th class="normal" style="text-align:center">Skor Komitmen</th>
-	  			<th class="normal" style="text-align:center">Hasil Survey</th>
-          <th class="normal" style="text-align:center;width:80px">Deskripsi</th>
-	  		</tr>
-	  	</thead>
-       <tbody class="withborder">
-         <?php $no=1; ?>
-         <?php foreach($data['survey'] as $datas): ?>
-           <tr>
-             <td style="text-align:center" class="number centerHorizontal text-center">
-               <?= $no;?>
-             </td>
-             <td>
-               <?= tanggal(explode(' ', $datas->tanggal_survey)[0]) ?>
-             </td>
-             <?php foreach($datas->identitas_survey as $x): ?>
-               <td style="text-align:center">
-                 <?= $x->score ?>
-               </td>
-             <?php endforeach; ?>
-
-             <td>
-               <?= $datas->nama_status ?>
-             </td>
-             <td style="width:190px;text-align:justify">
-               <?= $datas->deskripsi_status ?>
-             </td>
-           </tr>
-         <?php $no++; ?>
-         <?php endforeach; ?>
+     <table style="border-color:black">
+       <tbody>
+         <tr>
+           <td colspan="3"><b><?=$no?>. <?= tanggal(explode(' ', $datas->tanggal_survey)[0]) ?></b></td>
+         </tr>
+         <tr>
+           <td style="width:120px">&nbsp;&nbsp;&nbsp;Hasil Survey</td>
+           <td style="width:10px"> : </td>
+           <td>
+             <?= $datas->nama_status ?>
+           </td>
+         </tr>
+         <tr>
+           <td style="width:120px">&nbsp;&nbsp;&nbsp;Skor Komitmen</td>
+           <td style="width:10px"> : </td>
+           <td>
+             <?= $datas->identitas_survey[0]->score ?>
+           </td>
+         </tr>
+         <tr>
+           <td style="width:120px">&nbsp;&nbsp;&nbsp;Skor Eksplo</td>
+           <td style="width:10px"> : </td>
+           <td>
+             <?= $datas->identitas_survey[1]->score ?>
+           </td>
+         </tr>
+         <tr>
+           <td>&nbsp;&nbsp;&nbsp;Deskripsi Hasil</td>
+           <td style="width:10px"> : </td>
+           <td style="width:350px">
+             <?= $datas->deskripsi_status ?>
+           </td>
+         </tr>
        </tbody>
- 	  </table>
- 	 </div>
+     </table>
+   </div>
+
+   <?php
+    if($datas->istaskpertanyaan){
+    ?>
+      <div id="outtable" style="margin-top: 20px;margin-left:20px">
+        <table style="border-color:black">
+           <tbody class="withborder">
+             <tr>
+               <th colspan="4"  style="border: 0px solid #e3e3e3;">
+                 <span style="">Informasi Task Intervensi</span><br><br><br>
+               </th>
+             </tr>
+             <tr>
+              <th class="short number" style="text-align:center">No</th>
+              <th class="normal" style="text-align:center">Task Intervensi</th>
+              <th class="normal" style="text-align:center">Jawaban</th>
+              <th class="normal" style="text-align:center">Tanggal Pengerjaan</th>
+             </tr>
+             <?php $no=1; ?>
+             <?php foreach($datas->taskpertanyaan as $taskintervensi): ?>
+               <tr>
+                 <td style="text-align:center" class="number centerHorizontal text-center">
+                   <?= $no;?>
+                 </td>
+                 <td style="width:250px;text-align:justify">
+                   <?= $taskintervensi->intervensi_task ?>
+                 </td>
+                 <td style="width:100px;text-align:justify">
+                   <?php
+                    if($taskintervensi->status_task == "N" ){
+                      echo "Tidak Setuju, karena ".$taskintervensi->komentar_pertanyaan;
+                    } else if($taskintervensi->status_task == "Y" ){
+                      echo "Setuju";
+                    } else if($taskintervensi->status_task == "T" ){
+                      echo "Belum dikerjakan";
+                    }
+                   ?>
+                 </td>
+                 <td>
+                   <?php
+                    if($taskintervensi->tanggal_submit == "0000-00-00 00:00:00" ){
+                      echo "-";
+                    } else {
+                      echo tanggal(explode(' ', $taskintervensi->tanggal_submit)[0])." ".explode(' ', $taskintervensi->tanggal_submit)[1];
+                    }
+                   ?>
+                 </td>
+               </tr>
+             <?php $no++; ?>
+             <?php endforeach; ?>
+           </tbody>
+        </table>
+       </div>
+    <?php
+    }
+   ?>
+
+   <?php $no++; ?>
+   <?php endforeach; ?>
+
    <br><br>
    <div style="width:700px;text-align:right;;margin-top:20px">
      <!-- RIDE Application, <?= strftime('%d %B %Y') ?> -->
